@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = [
+    "programs/luckietoken",
+]
+
+[workspace.package]
+version = "0.2.0"
+edition = "2021"
+
+[workspace.dependencies]
+anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.30.1", default-features = false }
+spl-token = { version = "4", features = ["no-entrypoint"] }
+
+[profile.release]
+overflow-checks = true
+lto = "thin"
+codegen-units = 1

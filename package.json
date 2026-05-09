@@ -1,0 +1,16 @@
+{
+  "name": "luckietoken-core",
+  "version": "0.2.0",
+  "description": "LuckieToken - Hold-to-win lottery on Solana",
+  "private": true,
+  "scripts": {
+    "simulate": "node scripts/simulate.js",
+    "test": "echo Run: anchor test",
+    "build": "cargo build-sbf --tools-version v1.95",
+    "deploy": "solana program deploy target/deploy/luckietoken.so --program-id target/deploy/luckietoken-keypair.json --url devnet"
+  },
+  "dependencies": {
+    "@solana/spl-token": "^0.4.14",
+    "@solana/web3.js": "^1.98.4"
+  }
+}

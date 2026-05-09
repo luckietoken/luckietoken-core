@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Rust / Anchor build
+target/
+Cargo.lock
+.anchor/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+dist/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Logs
+*.log

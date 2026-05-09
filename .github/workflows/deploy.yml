@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: dtolnay/rust-toolchain@1.85.0
+
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/v2.3.13/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+      - name: Install Anchor CLI
+        run: |
+          npm install -g @coral-xyz/anchor-cli@0.30.1
+          anchor --version
+
+      - name: Build
+        run: cargo build-sbf --tools-version v1.85
+
+      - name: Run tests
+        run: cargo test
+
+      - name: Deploy to devnet
+        if: github.ref == 'refs/heads/main'
+        env:
+          DEPLOY_KEY: ${{ secrets.SOLANA_DEPLOY_KEY }}
+        run: |
+          echo "$DEPLOY_KEY" > ~/deploy-key.json
+          solana config set --keypair ~/deploy-key.json --url devnet
+          solana program deploy target/deploy/luckietoken.so --program-id target/deploy/luckietoken-keypair.json --url devnet
